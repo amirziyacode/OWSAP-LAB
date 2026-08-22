@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "_flag_form.html" import flag_form %}
+{% block title %}Level 2{% endblock %}
+{% block content %}
+<h1>Level 2 - UNION-based SQL Injection</h1>
+<p class="subtitle">Difficulty: Easy. Search the product catalog. There is a separate table named
+  <code>level2_secret_flags</code> with a column <code>flag_value</code> that holds this level's flag.
+  Find the right column count and pull it in with UNION.</p>
+
+<div class="card">
+  <form method="get">
+    <label>Product name contains</label>
+    <input type="text" name="q" value="{{ q or '' }}" autocomplete="off">
+    <button type="submit">Search</button>
+  </form>
+
+  {% if error %}
+    <div class="message error">Database error: {{ error }}</div>
+  {% endif %}
+
+  {% if rows %}
+    <table>
+      <tr><th>name</th><th>description</th><th>price</th></tr>
+      {% for r in rows %}
+      <tr><td>{{ r['name'] }}</td><td>{{ r['description'] }}</td><td>{{ r['price'] }}</td></tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+</div>
+
+{{ flag_form(2, request.args.get('result')) }}
+{% endblock %}

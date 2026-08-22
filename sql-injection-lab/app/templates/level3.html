@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "_flag_form.html" import flag_form %}
+{% block title %}Level 3{% endblock %}
+{% block content %}
+<h1>Level 3 - Database Enumeration</h1>
+<p class="subtitle">Difficulty: Medium. Same UNION-based injection point as before, but this time you don't
+  know the name of the table or column holding the flag. You'll need to enumerate the schema
+  (hint: SQLite keeps table definitions in <code>sqlite_master</code>) before you can pull the data out.</p>
+
+<div class="card">
+  <form method="get">
+    <label>Category</label>
+    <input type="text" name="q" value="{{ q or '' }}" autocomplete="off">
+    <button type="submit">Search</button>
+  </form>
+
+  {% if error %}
+    <div class="message error">Database error: {{ error }}</div>
+  {% endif %}
+
+  {% if rows %}
+    <table>
+      <tr><th>name</th><th>category</th></tr>
+      {% for r in rows %}
+      <tr><td>{{ r['name'] }}</td><td>{{ r['category'] }}</td></tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+</div>
+
+{{ flag_form(3, request.args.get('result')) }}
+{% endblock %}

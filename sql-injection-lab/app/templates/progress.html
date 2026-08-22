@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Progress{% endblock %}
+{% block content %}
+<h1>Your Progress</h1>
+{% set done = progress.values() | select | list | length %}
+<p class="subtitle">{{ done }} / {{ levels|length }} levels completed</p>
+
+<div class="card">
+  <ul class="level-list">
+    {% for num, meta in levels.items() %}
+    <li>
+      <div>
+        <a href="{{ url_for('level' ~ num ~ '_page') }}">Level {{ num }} - {{ meta.title }}</a>
+      </div>
+      {% if progress.get(num) %}
+        <span class="badge done">Completed</span>
+      {% else %}
+        <span class="badge todo">Not started</span>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

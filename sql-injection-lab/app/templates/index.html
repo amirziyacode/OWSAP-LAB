@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}SQLi CTF Lab - Levels{% endblock %}
+{% block content %}
+<h1>SQL Injection CTF Lab</h1>
+<p class="subtitle">10 levels, easy to very difficult. Local use only. Find each level's flag and submit it on that level's page.</p>
+
+<div class="card">
+  <ul class="level-list">
+    {% for num, meta in levels.items() %}
+    <li>
+      <div>
+        <a href="{{ url_for('level' ~ num ~ '_page') }}">Level {{ num }} - {{ meta.title }}</a>
+        <span class="badge {{ meta.difficulty|lower|replace(' ', '-') }}">{{ meta.difficulty }}</span>
+      </div>
+      {% if progress.get(num) %}
+        <span class="badge done">Completed</span>
+      {% else %}
+        <span class="badge todo">Not started</span>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<form method="post" action="{{ url_for('reset_lab') }}" onsubmit="return confirm('Reset the entire lab? This clears all progress and reseeds the database.');">
+  <button type="submit" class="danger">Reset Lab</button>
+</form>
+
+<div class="footer-note">
+  This application is intentionally vulnerable. Run it only on localhost / an isolated environment for learning purposes.
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% macro flag_form(level, result) %}
+<div class="card">
+  <h2>Submit Flag</h2>
+  <form class="flag-form" method="post" action="{{ url_for('submit_flag', level=level) }}">
+    <input type="text" name="flag" placeholder="FLAG{...}" autocomplete="off">
+    <button type="submit">Submit</button>
+  </form>
+  {% if result == 'correct' %}
+    <div class="message success">Correct! This level is now marked complete.</div>
+  {% elif result == 'wrong' %}
+    <div class="message error">That's not the right flag. Keep trying.</div>
+  {% endif %}
+</div>
+{% endmacro %}

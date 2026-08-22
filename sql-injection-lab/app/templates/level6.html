@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% from "_flag_form.html" import flag_form %}
+{% block title %}Level 6{% endblock %}
+{% block content %}
+<h1>Level 6 - Time-based Blind SQL Injection</h1>
+<p class="subtitle">Difficulty: Hard. This endpoint always returns the exact same message, no matter what
+  you send - there is no visible TRUE/FALSE difference at all. The only signal available is how long
+  the response takes. SQLite has no SLEEP() function; a deliberately expensive query (e.g. a large
+  self-join / cartesian product inside a CASE WHEN) is the equivalent trick. There is a row in
+  <code>level6_users</code> for username <code>targetuser</code> with a column <code>secret_flag</code>.</p>
+
+<div class="card">
+  <form method="get">
+    <label>Username</label>
+    <input type="text" name="username" value="{{ username or '' }}" autocomplete="off">
+    <button type="submit">Check</button>
+  </form>
+
+  {% if username %}
+    <div class="message info">Request processed.</div>
+    <p class="hint">Response time: {{ '%.1f'|format(elapsed * 1000) }} ms</p>
+  {% endif %}
+</div>
+
+{{ flag_form(6, request.args.get('result')) }}
+{% endblock %}

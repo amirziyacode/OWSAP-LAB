@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "_flag_form.html" import flag_form %}
+{% block title %}Level 5{% endblock %}
+{% block content %}
+<h1>Level 5 - Boolean-based Blind SQL Injection</h1>
+<p class="subtitle">Difficulty: Medium. This checker only ever tells you "User found" or "User not found" -
+  no data, no errors. There is a row in <code>level5_users</code> for username <code>targetuser</code>
+  with a column <code>secret_flag</code>. Use conditional payloads to extract it one character at a time.</p>
+
+<div class="card">
+  <form method="get">
+    <label>Username</label>
+    <input type="text" name="username" value="{{ username or '' }}" autocomplete="off">
+    <button type="submit">Check</button>
+  </form>
+
+  {% if username %}
+    {% if found %}
+      <div class="message success">User found.</div>
+    {% else %}
+      <div class="message error">User not found.</div>
+    {% endif %}
+  {% endif %}
+</div>
+
+{{ flag_form(5, request.args.get('result')) }}
+{% endblock %}

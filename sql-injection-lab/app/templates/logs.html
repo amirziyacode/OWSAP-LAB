@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Request Logs{% endblock %}
+{% block content %}
+<h1>Recent Requests</h1>
+<p class="subtitle">In-memory debug log (most recent first). Also written to app/requests.log.</p>
+<div class="card">
+  <table>
+    <tr><th>Time (UTC)</th><th>Method</th><th>Path</th><th>Args</th><th>Status</th><th>ms</th></tr>
+    {% for e in entries %}
+    <tr>
+      <td>{{ e.time }}</td>
+      <td>{{ e.method }}</td>
+      <td>{{ e.path }}</td>
+      <td>{{ e.args }}</td>
+      <td>{{ e.status }}</td>
+      <td>{{ e.elapsed_ms }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

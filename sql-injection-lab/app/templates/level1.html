@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% from "_flag_form.html" import flag_form %}
+{% block title %}Level 1{% endblock %}
+{% block content %}
+<h1>Level 1 - Basic Authentication SQL Injection</h1>
+<p class="subtitle">Difficulty: Easy. Log in as an administrator to reveal the flag.</p>
+
+<div class="card">
+  <form method="post">
+    <label>Username</label>
+    <input type="text" name="username" autocomplete="off">
+    <label>Password</label>
+    <input type="password" name="password" autocomplete="off">
+    <button type="submit">Login</button>
+  </form>
+
+  {% if message %}
+    <div class="message {{ 'success' if rows else 'error' }}">{{ message }}</div>
+  {% endif %}
+
+  {% if error %}
+    <div class="message error">Database error: {{ error }}</div>
+  {% endif %}
+
+  {% if rows %}
+    <table>
+      <tr><th>id</th><th>username</th><th>password</th><th>is_admin</th></tr>
+      {% for r in rows %}
+      <tr><td>{{ r['id'] }}</td><td>{{ r['username'] }}</td><td>{{ r['password'] }}</td><td>{{ r['is_admin'] }}</td></tr>
+      {% endfor %}
+    </table>
+    {% if rows[0]['is_admin'] %}
+      <div class="message info">Access granted as an administrator: {{ flag }}</div>
+    {% endif %}
+  {% endif %}
+</div>
+
+{{ flag_form(1, request.args.get('result')) }}
+{% endblock %}

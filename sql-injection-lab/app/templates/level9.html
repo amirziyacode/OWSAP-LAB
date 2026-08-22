@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% from "_flag_form.html" import flag_form %}
+{% block title %}Level 9{% endblock %}
+{% block content %}
+<h1>Level 9 - Second-order SQL Injection</h1>
+<p class="subtitle">Difficulty: Very Hard. Step 1: register a username below - this is stored safely
+  (parameterized query), nothing happens yet. Step 2: trigger "Process Pending Signups", which
+  simulates a batch job that reads your stored username back out of the database and uses it,
+  unsafely, to build a new query against the <code>level9_profiles</code> table. There's a row in
+  that table for username <code>system</code> whose <code>bio</code> column holds the flag.</p>
+
+<div class="card">
+  <h2>Step 1: Register</h2>
+  <form method="post">
+    <input type="hidden" name="action" value="register">
+    <label>Username</label>
+    <input type="text" name="username" autocomplete="off">
+    <button type="submit">Register</button>
+  </form>
+  {% if message %}
+    <div class="message info">{{ message }}</div>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h2>Step 2: Process</h2>
+  <form method="post" action="{{ url_for('level9_process') }}">
+    <button type="submit">Process Pending Signups</button>
+  </form>
+</div>
+
+{{ flag_form(9, request.args.get('result')) }}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% from "_flag_form.html" import flag_form %}
+{% block title %}Level 9 - Processing Results{% endblock %}
+{% block content %}
+<h1>Level 9 - Processing Results</h1>
+<p class="subtitle"><a href="{{ url_for('level9_page') }}">&larr; Back to Level 9</a></p>
+
+{% for r in results %}
+<div class="card">
+  <p><strong>Stored username used by the batch job:</strong> {{ r.stored_username }}</p>
+  {% if r.error %}
+    <div class="message error">Database error: {{ r.error }}</div>
+  {% elif r.rows %}
+    <table>
+      <tr><th>username</th><th>bio</th></tr>
+      {% for row in r.rows %}
+      <tr><td>{{ row['username'] }}</td><td>{{ row['bio'] }}</td></tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p class="hint">No matching profile.</p>
+  {% endif %}
+</div>
+{% else %}
+<div class="card"><p class="hint">Nothing was pending. Register a username first.</p></div>
+{% endfor %}
+
+{{ flag_form(9, request.args.get('result')) }}
+{% endblock %}

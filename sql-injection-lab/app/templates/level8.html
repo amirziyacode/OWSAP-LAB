@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% from "_flag_form.html" import flag_form %}
+{% block title %}Level 8{% endblock %}
+{% block content %}
+<h1>Level 8 - WAF Bypass</h1>
+<p class="subtitle">Difficulty: Hard. This login form sits behind an input-normalization layer that
+  strips a couple of dangerous keywords before your input is used. Think about how a filter that
+  only scans once, instead of re-scanning its own output, can be defeated.</p>
+
+<div class="card">
+  <form method="post">
+    <label>Username</label>
+    <input type="text" name="username" autocomplete="off">
+    <label>Password</label>
+    <input type="password" name="password" autocomplete="off">
+    <button type="submit">Login</button>
+  </form>
+
+  {% if message %}
+    <div class="message {{ 'success' if rows else 'error' }}">{{ message }}</div>
+  {% endif %}
+
+  {% if error %}
+    <div class="message error">Database error: {{ error }}</div>
+  {% endif %}
+
+  {% if rows %}
+    <table>
+      <tr><th>id</th><th>username</th><th>password</th><th>secret_flag</th></tr>
+      {% for r in rows %}
+      <tr><td>{{ r['id'] }}</td><td>{{ r['username'] }}</td><td>{{ r['password'] }}</td><td>{{ r['secret_flag'] }}</td></tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+</div>
+
+{{ flag_form(8, request.args.get('result')) }}
+{% endblock %}

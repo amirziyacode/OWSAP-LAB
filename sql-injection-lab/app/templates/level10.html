@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% from "_flag_form.html" import flag_form %}
+{% block title %}Level 10{% endblock %}
+{% block content %}
+<h1>Level 10 - Advanced Combined Challenge</h1>
+<p class="subtitle">Difficulty: Very Hard. Multi-step: (1) bypass authentication to log in, (2) use the
+  filtered product search below to enumerate the schema (errors are shown on this level) and find the
+  vault table, (3) UNION your way into the vault to retrieve the final flag. A weak blacklist blocks a
+  few obvious statement-altering keywords (DROP, INSERT, UPDATE, DELETE) but not SELECT/UNION.</p>
+
+{% if not logged_in %}
+<div class="card">
+  <h2>Step 1: Login</h2>
+  <form method="post">
+    <input type="hidden" name="action" value="login">
+    <label>Username</label>
+    <input type="text" name="username" autocomplete="off">
+    <label>Password</label>
+    <input type="password" name="password" autocomplete="off">
+    <button type="submit">Login</button>
+  </form>
+  {% if message %}
+    <div class="message error">{{ message }}</div>
+  {% endif %}
+</div>
+{% else %}
+<div class="card">
+  <p class="message success">Logged in.</p>
+  <form method="post" action="{{ url_for('level10_logout') }}">
+    <button type="submit" class="secondary">Log out</button>
+  </form>
+</div>
+
+<div class="card">
+  <h2>Step 2 &amp; 3: Product Search</h2>
+  <form method="get" action="{{ url_for('level10_search') }}">
+    <label>Product code</label>
+    <input type="text" name="code" value="{{ results.code if results else '' }}" autocomplete="off">
+    <button type="submit">Search</button>
+  </form>
+
+  {% if results %}
+    {% if results.error %}
+      <div class="message error">Database error: {{ results.error }}</div>
+    {% elif results.rows %}
+      <table>
+        <tr><th>name</th><th>code</th></tr>
+        {% for r in results.rows %}
+        <tr><td>{{ r['name'] }}</td><td>{{ r['code'] }}</td></tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p class="hint">No results.</p>
+    {% endif %}
+  {% endif %}
+</div>
+{% endif %}
+
+{{ flag_form(10, request.args.get('result')) }}
+{% endblock %}

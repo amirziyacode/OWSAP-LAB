@@ -1,0 +1,9 @@
+services:
+  sqli-lab:
+    build: .
+    container_name: sqli-ctf-lab
+    ports:
+      - "127.0.0.1:5000:5000"
+    environment:
+      - LAB_SECRET_KEY=change-me-for-fun-not-security
+    restart: unless-stopped
