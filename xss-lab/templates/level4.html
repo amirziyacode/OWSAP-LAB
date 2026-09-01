@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Level 4 — DOM XSS{% endblock %}
+{% block content %}
+<h1>[4] DOM-Based XSS</h1>
+<p class="badge Medium">Medium</p>
+<div class="panel">
+    <p><strong>Goal:</strong> This page reads a <code>#name=</code> URL fragment on the client side and never sends it to the server. Find the unsafe DOM sink in <code>static/js/level4.js</code> and craft a fragment that runs <code>xssLabSolve('level4')</code>.</p>
+    <p class="badge">Try editing the address bar, e.g. <code>#name=world</code></p>
+</div>
+
+<div class="panel">
+    <h3 id="welcome-box">Loading...</h3>
+</div>
+
+{% include "_hints_flag.html" %}
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/level4.js') }}"></script>
+{% endblock %}

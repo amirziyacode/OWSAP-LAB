@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Level 1 — Reflected XSS{% endblock %}
+{% block content %}
+<h1>[1] Reflected XSS in Search</h1>
+<p class="badge Easy">Easy</p>
+<div class="panel">
+    <p><strong>Goal:</strong> Get JavaScript to execute in your own browser via the search box, and call <code>xssLabSolve('level1')</code> from your injected script (or replicate its fetch call) to capture the flag.</p>
+    <form method="get" action="{{ url_for('level1.search') }}">
+        <input type="text" name="q" placeholder="Search products..." value="{{ q }}">
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+{% if results_html %}
+{{ results_html }}
+{% endif %}
+
+{% include "_hints_flag.html" %}
+{% endblock %}

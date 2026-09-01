@@ -1,0 +1,15 @@
+<div class="panel">
+    <h3>Hints</h3>
+    {% for hint in level.hints %}
+        <details class="hint"><summary>Hint {{ loop.index }}</summary><p>{{ hint.split('—', 1)[1] if '—' in hint else hint }}</p></details>
+    {% endfor %}
+</div>
+
+<div class="panel">
+    <h3>Flag</h3>
+    {% if flag %}
+        <div class="flag-box">{{ flag }}</div>
+    {% else %}
+        <p class="badge">Not captured yet — exploit the vulnerability to reveal the flag.</p>
+    {% endif %}
+</div>

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Level 5 — JavaScript Context XSS{% endblock %}
+{% block content %}
+<h1>[5] XSS in JavaScript String Context</h1>
+<p class="badge Medium">Medium → Hard</p>
+<div class="panel">
+    <p><strong>Goal:</strong> Your username is embedded into an inline &lt;script&gt; block as a JS string. HTML-encoding won't save this one. Break out of the string and call <code>xssLabSolve('level5')</code>.</p>
+    <form method="post" action="{{ url_for('level5.index') }}">
+        <input type="text" name="username" placeholder="Set your username" value="{{ username }}">
+        <button type="submit">Save</button>
+    </form>
+</div>
+
+<div class="panel">
+    <h3 id="greeting">Welcome back!</h3>
+</div>
+
+{{ script_html }}
+
+{% include "_hints_flag.html" %}
+{% endblock %}

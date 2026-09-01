@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Level 8 — Profile{% endblock %}
+{% block content %}
+<h1>Edit Your Bio</h1>
+<div class="panel">
+    <form method="post" action="{{ url_for('level8.profile') }}">
+        <textarea name="bio" rows="4" placeholder="Tell people about yourself...">{{ profile.bio if profile else '' }}</textarea>
+        <button type="submit">Save Bio</button>
+    </form>
+</div>
+<a class="btn" href="{{ url_for('level8.index') }}">Back to Announcements</a>
+{% endblock %}

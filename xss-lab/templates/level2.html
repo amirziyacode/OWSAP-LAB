@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Level 2 — Stored XSS{% endblock %}
+{% block content %}
+<h1>[2] Stored XSS in Comments</h1>
+<p class="badge Easy">Easy → Medium</p>
+<div class="panel">
+    <p><strong>Goal:</strong> Post a comment that will execute JavaScript for anyone who loads this page — including the admin, who periodically reviews new comments. A payload that calls <code>xssLabSolve('level2')</code> (or replicates its fetch) captures the flag when the admin's review runs.</p>
+</div>
+
+{% if post %}
+<div class="panel">
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.body }}</p>
+</div>
+{% endif %}
+
+<div class="panel">
+    <h3>Comments</h3>
+    {% for c in comments %}
+        <div class="comment">
+            <span class="author">{{ c.author }}</span>
+            <span>{{ c.body|safe }}</span>
+        </div>
+    {% else %}
+        <p class="badge">No comments yet.</p>
+    {% endfor %}
+</div>
+
+<div class="panel">
+    <h3>Add a comment</h3>
+    <form method="post" action="{{ url_for('level2.add_comment') }}">
+        <input type="text" name="author" placeholder="Your name">
+        <textarea name="body" rows="3" placeholder="Say something..."></textarea>
+        <button type="submit">Post Comment</button>
+    </form>
+</div>
+
+{% include "_hints_flag.html" %}
+{% endblock %}

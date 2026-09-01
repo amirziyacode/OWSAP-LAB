@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Level 6 — Filter Bypass{% endblock %}
+{% block content %}
+<h1>[6] Filter / WAF Bypass</h1>
+<p class="badge Hard">Hard</p>
+<div class="panel">
+    <p><strong>Goal:</strong> Comments are checked against a blacklist before being stored, but the rendering is just as unsafe as Level 2. The admin reviews new comments periodically. Find a payload the blacklist doesn't know about.</p>
+    <p class="badge">Blocked patterns: contains "&lt;script", "onerror", "onload", or "javascript:" (case-insensitive)</p>
+</div>
+
+<div class="panel">
+    <h3>Comments</h3>
+    {% for c in comments %}
+        <div class="comment">
+            <span class="author">{{ c.author }}</span>
+            <span>{{ c.body|safe }}</span>
+        </div>
+    {% else %}
+        <p class="badge">No comments yet.</p>
+    {% endfor %}
+</div>
+
+<div class="panel">
+    <h3>Add a comment</h3>
+    <form method="post" action="{{ url_for('level6.add_comment') }}">
+        <input type="text" name="author" placeholder="Your name">
+        <textarea name="body" rows="3" placeholder="Say something..."></textarea>
+        <button type="submit">Post Comment</button>
+    </form>
+</div>
+
+{% include "_hints_flag.html" %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Progress{% endblock %}
+{% block content %}
+<h1>Your Progress</h1>
+<div class="panel">
+{% for level in levels %}
+    <div class="progress-row">
+        <span>Level {{ level.number }} — {{ level.name }}</span>
+        <span>{% if level.id in completed %}<span class="badge done">✓</span>{% else %}<span class="badge">—</span>{% endif %}</span>
+    </div>
+{% endfor %}
+</div>
+<form method="post" action="{{ url_for('reset_progress_route') }}" onsubmit="return confirm('Reset all progress for this session?');">
+    <button type="submit">Reset Progress</button>
+</form>
+{% endblock %}

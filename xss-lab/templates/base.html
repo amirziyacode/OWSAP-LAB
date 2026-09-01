@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}XSS Security Lab{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% block head %}{% endblock %}
+</head>
+<body>
+<header class="navbar">
+    <a class="brand" href="{{ url_for('home') }}">XSS SECURITY LAB</a>
+    <nav>
+        <a href="{{ url_for('home') }}">Levels</a>
+        <a href="{{ url_for('progress_page') }}">Progress</a>
+    </nav>
+</header>
+
+<main class="container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">{% for m in messages %}<p>{{ m }}</p>{% endfor %}</div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <p>Local-only educational XSS lab &middot; localhost:5000</p>
+</footer>
+
+<script>
+// Every level page and the injected payloads that run inside it share this
+// same origin, so a successful XSS payload can call this helper (or replicate
+// the fetch call itself) to report that it executed in the intended context.
+// This is how the lab detects real exploitation instead of relying on a
+// headless browser.
+window.xssLabSolve = function (levelId) {
+    fetch('/api/report/' + levelId, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'same-origin'
+    }).then(function () {
+        console.log('[xss-lab] reported completion for', levelId);
+    });
+};
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

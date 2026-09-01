@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Level 8 — Login{% endblock %}
+{% block content %}
+<h1>[8] Realistic Multi-Step XSS Chain — Login</h1>
+<div class="panel">
+    <form method="post" action="{{ url_for('level8.login') }}">
+        <input type="text" name="username" placeholder="Username" value="alice">
+        <input type="password" name="password" placeholder="Password">
+        <button type="submit">Log in</button>
+    </form>
+    <p class="badge">Lab account: <code>alice</code> / <code>lab-password-1</code></p>
+</div>
+{% endblock %}

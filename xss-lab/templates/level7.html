@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Level 7 — CSP + DOM XSS{% endblock %}
+{% block content %}
+<h1>[7] CSP + DOM XSS</h1>
+<p class="badge Hard">Hard</p>
+<div class="panel">
+    <p><strong>Goal:</strong> This page ships a real Content-Security-Policy that blocks attacker-injected &lt;script&gt; tags and inline event handlers. There's still a DOM XSS here — find the first-party script CSP already trusts, and see what happens if you control the data it processes. Trigger <code>xssLabSolve('level7')</code>.</p>
+    <p class="badge">Try the ?theme= query parameter</p>
+    <p>Current theme setting: <code>{{ theme }}</code></p>
+</div>
+
+<div class="panel">
+    <h3 id="theme-status">Theme: default</h3>
+</div>
+
+{% include "_hints_flag.html" %}
+{% endblock %}
+{% block scripts %}
+<script nonce="{{ nonce }}">
+    // This script is first-party and carries a valid CSP nonce, so it's
+    // allowed to run. It exists to apply a UI theme based on the ?theme=
+    // query parameter.
+    function applyTheme(themeName) {
+        document.getElementById('theme-status').textContent = 'Theme: ' + themeName;
+    }
+
+    // INTENTIONAL VULNERABILITY:
+    // The theme value (server-rendered from the request, below) is passed
+    // into eval() as a string-built statement instead of just being passed
+    // as a function argument. A safe version would simply call
+    // applyTheme("{{ theme }}") directly with proper JS-string escaping,
+    // or better, never touch eval() at all.
+    eval("applyTheme('{{ theme|safe }}')");
+</script>
+{% endblock %}

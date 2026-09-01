@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}XSS Security Lab{% endblock %}
+{% block content %}
+<h1>XSS Security Lab</h1>
+<p>Practice real-world cross-site scripting vulnerabilities in an isolated, local-only environment. Each level teaches a distinct XSS technique — read the goal, find the injection point, and capture the flag.</p>
+
+<div class="level-grid">
+{% for level in levels %}
+    <a class="level-card" href="{{ url_for(level.id + '.index') }}">
+        <div><span class="num">[{{ level.number }}]</span>{{ level.name }}</div>
+        <div>
+            {% if level.id in completed %}<span class="badge done">✓ solved</span>{% endif %}
+            <span class="badge {{ level.difficulty.split(' ')[0] }}">{{ level.difficulty }}</span>
+        </div>
+    </a>
+{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+services:
+  xss-lab:
+    build: .
+    # Bind only to localhost on the host machine -- this lab must never be
+    # exposed to the network.
+    ports:
+      - "127.0.0.1:5000:5000"
+    environment:
+      - XSS_LAB_SECRET_KEY=local-xss-lab-dev-secret
+    volumes:
+      - xss-lab-db:/app/database
+
+volumes:
+  xss-lab-db:

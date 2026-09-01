@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Level 8 — XSS Chain{% endblock %}
+{% block content %}
+<h1>[8] Realistic Multi-Step XSS Chain</h1>
+<p class="badge Expert">Expert</p>
+<div class="panel">
+    <p><strong>Goal:</strong> Chain a stored XSS in your profile bio through a comment on this Announcements post so that it executes when the admin's periodic review renders your bio preview — inside the admin's own session. The flag is captured automatically once the simulated admin session is compromised.</p>
+    {% if current_user %}
+        <p>Logged in as <strong>{{ current_user }}</strong> ({{ role }}) &middot;
+           <a href="{{ url_for('level8.profile') }}">Edit bio</a> &middot;
+           <a href="{{ url_for('level8.logout') }}">Log out</a></p>
+    {% else %}
+        <p><a class="btn" href="{{ url_for('level8.login') }}">Log in to participate</a></p>
+    {% endif %}
+</div>
+
+{% if post %}
+<div class="panel">
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.body }}</p>
+</div>
+{% endif %}
+
+<div class="panel">
+    <h3>Comments</h3>
+    {% for c in comments %}
+        <div class="comment">
+            <span class="author">{{ c.author }}</span>
+            <span>{{ c.body }}</span>
+            <div class="bio-preview" style="color:var(--muted); font-size:0.85rem;">
+                {# INTENTIONAL VULNERABILITY: author bio rendered unescaped #}
+                {{ (c.author_bio or '')|safe }}
+            </div>
+        </div>
+    {% else %}
+        <p class="badge">No comments yet.</p>
+    {% endfor %}
+</div>
+
+{% if current_user %}
+<div class="panel">
+    <h3>Add a comment</h3>
+    <form method="post" action="{{ url_for('level8.add_comment') }}">
+        <textarea name="body" rows="3" placeholder="Say something..."></textarea>
+        <button type="submit">Post Comment</button>
+    </form>
+</div>
+{% endif %}
+
+{% include "_hints_flag.html" %}
+{% endblock %}
