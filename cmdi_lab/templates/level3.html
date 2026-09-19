@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Level 3 - Command Injection Lab{% endblock %}
+{% block breadcrumb %}<span class="crumb"><a class="back" href="{{ url_for('index') }}">&larr; index</a> / level 3</span>{% endblock %}
+{% block content %}
+<h1>Level 3 &mdash; Diagnostic Report Generator</h1>
+<p>Prepare a diagnostic report for a given filename and output format.</p>
+
+<form method="POST">
+    <label for="filename">Filename</label>
+    <input type="text" id="filename" name="filename" value="{{ filename }}" placeholder="diag_report_01">
+    <label for="format">Format</label>
+    <input type="text" id="format" name="format" value="{{ fmt }}" placeholder="txt">
+    <button type="submit">Generate</button>
+</form>
+
+{% if error %}
+<pre class="output">{{ error }}</pre>
+{% endif %}
+
+{% if output %}
+<h2>Output</h2>
+<pre class="output">{{ output }}</pre>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Level 5 - Command Injection Lab{% endblock %}
+{% block breadcrumb %}<span class="crumb"><a class="back" href="{{ url_for('index') }}">&larr; index</a> / level 5</span>{% endblock %}
+{% block content %}
+<h1>Level 5 &mdash; Local File Search Utility</h1>
+<p>Search the diagnostic working directory for files matching a pattern. This wraps a local command-line utility directly (no shell involved).</p>
+
+<form method="POST">
+    <label for="pattern">Search pattern</label>
+    <input type="text" id="pattern" name="pattern" value="{{ pattern }}" placeholder="*.txt">
+    <button type="submit">Search</button>
+</form>
+
+{% if error %}
+<pre class="output">{{ error }}</pre>
+{% endif %}
+
+{% if output %}
+<h2>Output</h2>
+<pre class="output">{{ output }}</pre>
+{% endif %}
+
+<p class="hint">No shell is involved here &mdash; semicolons and pipes are just literal characters to the underlying tool. Think about what other flags that tool accepts.</p>
+{% endblock %}

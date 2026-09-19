@@ -1,0 +1,18 @@
+services:
+  cmdi-lab:
+    build: .
+    image: cmdi-lab:latest
+    container_name: cmdi-lab
+    ports:
+      # Bound to loopback only - never exposed beyond this host.
+      - "127.0.0.1:5000:5000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=5000
+      - FLASK_DEBUG=0
+    read_only: false          # levels write job logs / state at runtime
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped

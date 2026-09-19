@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Level 8 - Command Injection Lab{% endblock %}
+{% block breadcrumb %}<span class="crumb"><a class="back" href="{{ url_for('index') }}">&larr; index</a> / level 8</span>{% endblock %}
+{% block content %}
+<h1>Level 8 &mdash; Asynchronous Diagnostic Job</h1>
+<p>Submit a diagnostic job. It runs in the background; check its status and log separately.</p>
+
+<form method="POST">
+    <label for="host">Host</label>
+    <input type="text" id="host" name="host" value="" placeholder="127.0.0.1">
+    <button type="submit">Submit job</button>
+</form>
+
+{% if job_id %}
+<div id="panel">
+    <p class="status-line">job id: <code>{{ job_id }}</code></p>
+    <p class="status-line" id="status-text">status: queued</p>
+</div>
+<pre class="output" id="log" style="display:none;"></pre>
+<script>
+    const jobId = {{ job_id | tojson }};
+    const statusEl = document.getElementById('status-text');
+    const logEl = document.getElementById('log');
+
+    async function poll() {
+        const res = await fetch(`/level8/job/${jobId}`);
+        const data = await res.json();
+        statusEl.textContent = `status: ${data.status}`;
+        if (data.status === 'done') {
+            const logRes = await fetch(`/level8/log/${jobId}`);
+            const logData = await logRes.json();
+            logEl.style.display = 'block';
+            logEl.textContent = logData.log || '(empty log)';
+            return;
+        }
+        setTimeout(poll, 700);
+    }
+    poll();
+</script>
+{% endif %}
+
+<p class="hint">Endpoints: <code>GET /level8/job/&lt;job_id&gt;</code> for status, <code>GET /level8/log/&lt;job_id&gt;</code> for the captured output.</p>
+{% endblock %}

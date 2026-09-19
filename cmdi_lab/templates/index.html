@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Command Injection Lab{% endblock %}
+{% block content %}
+<h1>Command Injection Lab</h1>
+<p class="hint" style="border-top:none;padding-top:0;">
+    Eight self-contained challenges. Each one has its own flag. Nothing here
+    depends on any other level.
+</p>
+<div class="card-grid">
+    <a class="level-card{% if 'level1' in solved_levels %} solved{% endif %}" href="{{ url_for('level1.view') }}">
+        <div class="num">Level 1{% if 'level1' in solved_levels %} &mdash; solved{% endif %}</div>
+        <div class="title">Basic Command Injection</div>
+    </a>
+    <a class="level-card{% if 'level2' in solved_levels %} solved{% endif %}" href="{{ url_for('level2.view') }}">
+        <div class="num">Level 2{% if 'level2' in solved_levels %} &mdash; solved{% endif %}</div>
+        <div class="title">Blind Command Injection</div>
+    </a>
+    <a class="level-card{% if 'level3' in solved_levels %} solved{% endif %}" href="{{ url_for('level3.view') }}">
+        <div class="num">Level 3{% if 'level3' in solved_levels %} &mdash; solved{% endif %}</div>
+        <div class="title">Hidden Parameter</div>
+    </a>
+    <a class="level-card{% if 'level4' in solved_levels %} solved{% endif %}" href="{{ url_for('level4.view') }}">
+        <div class="num">Level 4{% if 'level4' in solved_levels %} &mdash; solved{% endif %}</div>
+        <div class="title">Blacklist Bypass</div>
+    </a>
+    <a class="level-card{% if 'level5' in solved_levels %} solved{% endif %}" href="{{ url_for('level5.view') }}">
+        <div class="num">Level 5{% if 'level5' in solved_levels %} &mdash; solved{% endif %}</div>
+        <div class="title">Argument Injection</div>
+    </a>
+    <a class="level-card{% if 'level6' in solved_levels %} solved{% endif %}" href="{{ url_for('level6.view') }}">
+        <div class="num">Level 6{% if 'level6' in solved_levels %} &mdash; solved{% endif %}</div>
+        <div class="title">Shell Parsing</div>
+    </a>
+    <a class="level-card{% if 'level7' in solved_levels %} solved{% endif %}" href="{{ url_for('level7.view') }}">
+        <div class="num">Level 7{% if 'level7' in solved_levels %} &mdash; solved{% endif %}</div>
+        <div class="title">File Processing</div>
+    </a>
+    <a class="level-card{% if 'level8' in solved_levels %} solved{% endif %}" href="{{ url_for('level8.view') }}">
+        <div class="num">Level 8{% if 'level8' in solved_levels %} &mdash; solved{% endif %}</div>
+        <div class="title">Async Command Injection</div>
+    </a>
+</div>
+{% endblock %}

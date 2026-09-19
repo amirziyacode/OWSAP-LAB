@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Level 6 - Command Injection Lab{% endblock %}
+{% block breadcrumb %}<span class="crumb"><a class="back" href="{{ url_for('index') }}">&larr; index</a> / level 6</span>{% endblock %}
+{% block content %}
+<h1>Level 6 &mdash; Advanced Diagnostic</h1>
+<p>This endpoint validates input with both an allowlist and a blacklist before running a diagnostic.</p>
+
+<form method="POST">
+    <label for="host">Host</label>
+    <input type="text" id="host" name="host" value="{{ host }}" placeholder="127.0.0.1">
+    <button type="submit">Run diagnostic</button>
+</form>
+
+{% if error %}
+<pre class="output">{{ error }}</pre>
+{% endif %}
+
+{% if output %}
+<h2>Output</h2>
+<pre class="output">{{ output }}</pre>
+{% endif %}
+
+<p class="hint">Blocked characters include the usual command separators and whitespace. Allowed characters: letters, digits, <code>. - / $ {}&nbsp;()</code>.</p>
+{% endblock %}

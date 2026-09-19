@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Level 1 - Command Injection Lab{% endblock %}
+{% block breadcrumb %}<span class="crumb"><a class="back" href="{{ url_for('index') }}">&larr; index</a> / level 1</span>{% endblock %}
+{% block content %}
+<h1>Level 1 &mdash; Ping Diagnostic</h1>
+<p>Enter a host to run a quick reachability check.</p>
+
+<form method="POST">
+    <label for="host">Host</label>
+    <input type="text" id="host" name="host" value="{{ host }}" placeholder="127.0.0.1">
+    <button type="submit">Run diagnostic</button>
+</form>
+
+{% if error %}
+<pre class="output">{{ error }}</pre>
+{% endif %}
+
+{% if output %}
+<h2>Output</h2>
+<pre class="output">{{ output }}</pre>
+{% endif %}
+{% endblock %}

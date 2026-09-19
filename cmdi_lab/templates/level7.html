@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Level 7 - Command Injection Lab{% endblock %}
+{% block breadcrumb %}<span class="crumb"><a class="back" href="{{ url_for('index') }}">&larr; index</a> / level 7</span>{% endblock %}
+{% block content %}
+<h1>Level 7 &mdash; File Processing Service</h1>
+<p>Inspect a file inside the diagnostic working directory. Available files: <code>notes.txt</code>, <code>report.csv</code>, <code>readme.md</code>.</p>
+
+<form method="POST">
+    <label for="filename">Filename</label>
+    <input type="text" id="filename" name="filename" value="{{ filename }}" placeholder="notes.txt">
+    <label for="operation">Operation</label>
+    <input type="text" id="operation" name="operation" value="{{ operation }}" placeholder="info">
+    <button type="submit">Inspect</button>
+</form>
+
+{% if error %}
+<pre class="output">{{ error }}</pre>
+{% endif %}
+
+{% if output %}
+<h2>Output</h2>
+<pre class="output">{{ output }}</pre>
+{% endif %}
+
+<p class="hint">Recognized operations: <code>info</code>, <code>mime</code>, <code>encoding</code>. Filenames are strictly confined to the working directory.</p>
+{% endblock %}

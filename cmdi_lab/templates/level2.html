@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Level 2 - Command Injection Lab{% endblock %}
+{% block breadcrumb %}<span class="crumb"><a class="back" href="{{ url_for('index') }}">&larr; index</a> / level 2</span>{% endblock %}
+{% block content %}
+<h1>Level 2 &mdash; Blind Network Diagnostic</h1>
+<p>Diagnostics run in the background. No command output is ever returned to the browser &mdash; only a job status.</p>
+
+<form method="POST">
+    <label for="host">Host</label>
+    <input type="text" id="host" name="host" value="" placeholder="127.0.0.1">
+    <button type="submit">Start diagnostic</button>
+</form>
+
+{% if job_id %}
+<div id="panel">
+    <p class="status-line">job: <code>{{ job_id }}</code></p>
+    <p class="status-line" id="status-text">status: queued</p>
+</div>
+<pre class="output" id="result" style="display:none;"></pre>
+<script>
+    const jobId = {{ job_id | tojson }};
+    const statusEl = document.getElementById('status-text');
+    const resultEl = document.getElementById('result');
+
+    async function poll() {
+        const res = await fetch(`/level2/status?job_id=${encodeURIComponent(jobId)}`);
+        const data = await res.json();
+        statusEl.textContent = `status: ${data.status}` + (data.duration ? ` (${data.duration}s)` : '');
+        if (data.status === 'done') {
+            if (data.flag) {
+                resultEl.style.display = 'block';
+                resultEl.textContent = 'Elevated execution time detected.\n' + data.flag;
+            }
+            return;
+        }
+        setTimeout(poll, 700);
+    }
+    poll();
+</script>
+{% endif %}
+
+<p class="hint">Tip: a normal ping to a reachable host resolves in well under a second.</p>
+{% endblock %}

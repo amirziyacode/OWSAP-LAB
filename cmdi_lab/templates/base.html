@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Command Injection Lab{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <a class="brand" href="{{ url_for('index') }}">&gt;_ cmdi-lab</a>
+            {% block breadcrumb %}{% endblock %}
+        </header>
+        <main>
+            {% block content %}{% endblock %}
+            {% if current_level %}
+            {% include "flag_submit.html" %}
+            {% endif %}
+        </main>
+        <footer>local training instance &mdash; not for exposure to the internet</footer>
+    </div>
+</body>
+</html>
